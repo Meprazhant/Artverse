@@ -1,8 +1,10 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import { useSession } from 'next-auth/react'
 
 function Social(a) {
+
+
     console.log(a.a)
     var social = a.a
     var iconval = ""
@@ -45,8 +47,9 @@ function Social(a) {
 }
 
 function Edit() {
+  
 
-    var session = useSession()
+    const session= useSession();
     var [auth, setAuth] = React.useState(false)
     React.useEffect(() => {
         if (session.status === 'loading') {
@@ -68,6 +71,27 @@ function Edit() {
   const [location, setLocation] = useState('');
   const [website, setWebsite] = useState('');
   const [bio, setBio] = useState('');
+  useEffect(() => {
+    // Define an async function to fetch the data
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/users/'+session.data.user.email);  // Replace with your API endpoint URL
+        if (response.ok) {
+          const json = await response.json();
+          setProfession(json.profession)
+        setSocials(json.social)
+        } else {
+          // Handle the error case if needed
+          console.log('Error: ' + response.status);
+        }
+      } catch (error) {
+        // Handle any network or fetch-related errors
+        console.error('Error: ' + error);
+      }
+    };
+
+    fetchData(); // Call the async function to fetch the data
+  }, []); // Empty dependency array to run the effect only once
 
 
 function saveChanges (){
@@ -85,6 +109,11 @@ function saveChanges (){
     if (bio.trim() !== '') {
       requestBody.bio = bio;
     }
+    if (socials.length > 0) {
+
+
+requestBody.social = JSON.stringify(socials);
+}
 
 
     console.log(requestBody)
@@ -124,6 +153,7 @@ function saveChanges (){
 
   const handleBioChange = (event) => {
     setBio(event.target.value);
+    console.log(socials)
   };
 
 
