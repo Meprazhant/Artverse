@@ -18,7 +18,7 @@ export default async function handler(req, res) {
                 let social=user[0].social
                 social=JSON.parse(social)
                 
-                return res.send({social:social,profession:user[0].profession})
+                return res.send({social:social,profession:user[0].profession,location:user[0].location,bio:user[0].bio,website:user[0].website})
             
             }
             if (req.method === 'POST') {

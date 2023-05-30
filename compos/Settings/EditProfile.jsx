@@ -67,10 +67,10 @@ function Edit() {
     var [domain, setDomain] = React.useState('')
     var [username, setUsername] = React.useState('')
     var [socials, setSocials] = React.useState([])
-     const [profession, setProfession] = useState('Other');
-  const [location, setLocation] = useState('');
-  const [website, setWebsite] = useState('');
-  const [bio, setBio] = useState('');
+     let [profession, setProfession] = useState('Other');
+  let [location, setLocation] = useState('');
+  let [website, setWebsite] = useState('');
+  let [bio, setBio] = useState('');
   useEffect(() => {
     // Define an async function to fetch the data
     const fetchData = async () => {
@@ -80,12 +80,16 @@ function Edit() {
           const json = await response.json();
           setProfession(json.profession)
         setSocials(json.social)
+        setLocation(json.location)
+        setBio(json.bio)
+        setWebsite(json.website)
+
         } else {
           // Handle the error case if needed
           console.log('Error: ' + response.status);
         }
       } catch (error) {
-        // Handle any network or fetch-related errors
+        // Handle any network or fetch-related erroreks
         console.error('Error: ' + error);
       }
     };
